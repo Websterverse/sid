@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base{
-  /* html{
-    font-family: "Poppins", "sans-serif";
-  } */
-
   body {
     background-color: #fdfeff;
     overflow-x: hidden;
