@@ -6,31 +6,31 @@ import NoteCard from './Components/NoteCard'
 import { MdAdd } from 'react-icons/md'
 import Modal from 'react-modal'
 
-const page = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [notesArr, setNotesArr] = useState([]);
-  const [openAddEditModal, setOpenAddEditModal] = useState({
+const Page = () => {
+  const [Title, setTitle] = useState("");
+  const [Content, setContent] = useState("");
+  const [CurrDate, setDate] = useState(new Date());
+  const [NotesArr, setNotesArr] = useState([]);
+  const [OpenAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
     type: "",
     idx: null
   });
-  const [openNoteModal, setOpenNoteModal] = useState({
+  const [OpenNoteModal, setOpenNoteModal] = useState({
     isShown: false,
     note: null
   });
 
   const addHandler = () => {
-    setNotesArr([...notesArr, { title, content }]);
+    setNotesArr([...NotesArr, { Title, Content }]);
     setTitle("");
     setContent("");
   };
 
   const editHandler = (i) => {
-    const note = notesArr[i];
-    setTitle(note.title);
-    setContent(note.content);
+    const note = NotesArr[i];
+    setTitle(note.Title);
+    setContent(note.Content);
     setOpenAddEditModal(() => ({
       isShown: true,
       type: "edit",
@@ -39,8 +39,8 @@ const page = () => {
   };
 
   const updateNoteHandler = () => {
-    const updatedArr = [...notesArr];
-    updatedArr[openAddEditModal.idx] = { title, content };
+    const updatedArr = [...NotesArr];
+    updatedArr[OpenAddEditModal.idx] = { Title, Content };
     setNotesArr(updatedArr);
     setOpenAddEditModal({ isShown: false, type: "", selectedNoteIndex: null });
     setTitle("");
@@ -48,7 +48,7 @@ const page = () => {
   };
 
   const deleteHandler = (i) => {
-    let arr = [...notesArr];
+    let arr = [...NotesArr];
     arr.splice(i, 1);
     setNotesArr(arr);
   };
@@ -56,25 +56,25 @@ const page = () => {
   const openNoteHandler = (i) => {
     setOpenNoteModal({
       isShown: true,
-      note: notesArr[i]
+      note: NotesArr[i]
     });
 
-    console.log(openNoteModal.note);
+    console.log(OpenNoteModal.note);
   };
 
   let renderNote;
-  if (notesArr.length <= 0) {
+  if (NotesArr.length <= 0) {
     renderNote =
       <h3 className='text-xl text-slate-400 flex'>No notes to display</h3>
   } else {
-    renderNote = notesArr.map((ele, i) => {
+    renderNote = NotesArr.map((ele, i) => {
       return (
 
         <NoteCard
           key={i}
-          title={ele.title}
-          content={ele.content}
-          date={date.toDateString()}
+          title={ele.Title}
+          content={ele.Content}
+          date={CurrDate.toDateString()}
           onEdit={() => {
             editHandler(i);
           }}
@@ -103,7 +103,7 @@ const page = () => {
         <MdAdd className='text-[32px] text-white' />
       </button>
 
-      <Modal isOpen={openAddEditModal.isShown}
+      <Modal isOpen={OpenAddEditModal.isShown}
         onRequestClose={() => { setOpenAddEditModal({ isShown: false, type: "", idx: null }); }}
         style={{
           overlay: {
@@ -120,7 +120,7 @@ const page = () => {
             <input
               className='text-2xl text-slate-950 outline-none'
               placeholder='Title'
-              value={title}
+              value={Title}
               onChange={(e) => {
                 setTitle(e.target.value)
               }}
@@ -134,7 +134,7 @@ const page = () => {
               className='text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded'
               placeholder='Content'
               rows={10}
-              value={content}
+              value={Content}
               onChange={(e) => {
                 setContent(e.target.value)
               }}
@@ -142,18 +142,18 @@ const page = () => {
           </div>
 
           <button className='btn-primary font-medium mt-5 p-3' onClick={() => {
-            if (openAddEditModal.type === "add") {
+            if (OpenAddEditModal.type === "add") {
               addHandler();
               setOpenAddEditModal({ isShown: false, type: "", selectedNoteIndex: null });
-            } else if (openAddEditModal.type === "edit") {
+            } else if (OpenAddEditModal.type === "edit") {
               updateNoteHandler();
               setOpenAddEditModal({ isShown: false, type: "", selectedNoteIndex: null });
             }
-          }}>{openAddEditModal.type === "add" ? "Add" : "Update"}</button>
+          }}>{OpenAddEditModal.type === "add" ? "Add" : "Update"}</button>
         </div>
       </Modal>
 
-      <Modal isOpen={openNoteModal.isShown}
+      <Modal isOpen={OpenNoteModal.isShown}
         onRequestClose={() => { setOpenNoteModal({ isShown: false, note: null }); }}
         style={{
           overlay: {
@@ -164,10 +164,10 @@ const page = () => {
         contentLabel=""
         className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
       >
-        {openNoteModal.note ? (
+        {OpenNoteModal.note ? (
           <div>
-            <h3 className="text-2xl font-semibold">{openNoteModal.note.title}</h3>
-            <p className="text-sm text-slate-500 mt-4">{openNoteModal.note.content}</p>
+            <h3 className="text-2xl font-semibold">{OpenNoteModal.note.title}</h3>
+            <p className="text-sm text-slate-500 mt-4">{OpenNoteModal.note.content}</p>
           </div>
         ) : (
           <p>Loading note...</p>
@@ -178,4 +178,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
